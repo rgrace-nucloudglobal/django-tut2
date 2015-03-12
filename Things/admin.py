@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from t.models import Color, Shape, Thing
+from Things.models import Thing, Color, Shape
 
 # Register your models here.
 class ColorAdmin(admin.ModelAdmin):
