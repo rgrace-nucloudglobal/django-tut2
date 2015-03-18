@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf.global_settings import AUTH_USER_MODEL
 
 
 # Create your models here.
@@ -17,6 +18,7 @@ class Shape(models.Model):
         return self.enName
 
 class Thing(models.Model):
+    user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
     enName = models.CharField(verbose_name='Name', max_length=200, blank=False)
     color = models.ForeignKey(Color, blank=False)
     shape = models.ForeignKey(Shape, blank=False)

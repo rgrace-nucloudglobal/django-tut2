@@ -10,7 +10,7 @@ class ShapeAdmin(admin.ModelAdmin):
     fields = ['enName', 'description']
 
 class ThingAdmin(admin.ModelAdmin):
-    fields = ['enName', 'color', 'shape', 'description']
+    fields = ['enName', 'color', 'shape', 'user', 'description']
 
 
 admin.site.register(Color, ColorAdmin)
