@@ -16,6 +16,8 @@ from django.contrib.auth.models import User, UserManager
 def index(request):
 
     user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('user:login'))
     if user.is_superuser:
         user_things = Thing.objects.order_by('enName')
     else:
