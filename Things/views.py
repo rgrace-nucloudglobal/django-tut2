@@ -29,15 +29,14 @@ def index(request):
 def edit_description(request, thing_id, user_id):
     
     if request.method == 'POST':
-        if 'user_id' in request.POST and (request.POST['user_id'] is 'None' or int(request.POST['user_id']) == 0):
+        if 'user_id' in request.POST and (request.POST['user_id'] is None or int(request.POST['user_id']) == 0):
             user = get_object_or_404(User, pk=user_id)
         else:
             user = get_object_or_404(User, pk=request.POST['user_id'])
-        xxxx = user.id
         
         form = ThingForm()
         
-        if thing_id is 'None' or int(thing_id) == 0:
+        if thing_id is None or int(thing_id) == 0:
             thing = Thing(user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
         else:
             thing = Thing(id=request.POST['thing_id'], user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
@@ -47,8 +46,7 @@ def edit_description(request, thing_id, user_id):
 #         if form.is_valid():
 #         - supposed to be able to pull down submitted form values using form.cleaned_data['input_name']
         return HttpResponseRedirect(reverse('Things:index'))
-#         else:
-#             thing = get_object_or_404(Thing, pk=thing_id)
+
     else:
         if int(thing_id) == 0:
             thing = Thing()
