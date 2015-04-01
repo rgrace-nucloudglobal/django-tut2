@@ -5,12 +5,28 @@
     <thead>
       <tr colspan="4"><th>Thing</th></tr>
       <tr>
-        <th>Name</th><th>Color</th><th>Shape</th><th>Description</th>
+        <th>Name</th>
+        {% if show_username %}<th>{{ "Username" }}</th>{% endif %}
+        <th>Color</th>
+        <th>Shape</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><input id="id_name" type="text" name="enName" value="{{ thing.enName }}"></td>
+        <td>
+          <input id="id_thing_id" type="hidden" name="thing_id" value="{{ thing.id }}" >
+          <input id="id_enName" type="text" name="enName" value="{{ thing.enName }}" >
+        </td>
+        {% if show_username %}
+        <td>
+          <select id="id_user_id" name="user_id" >
+          {% for user in users %}
+            <option value="{{ user.id }}" {% if thing.user_id == user.id  %} selected="selected" {% endif %}>{{ user.username }}</option>
+          {% endfor %}
+          </select>
+        </td>
+        {% endif %}
         <td>
           <select id="id_color_id" name="color_id" >
           {% for color in colors %}

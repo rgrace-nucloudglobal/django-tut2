@@ -5,16 +5,27 @@
 <table>
   <thead>
     <tr><th colspan="4">User: {{ user }}</th></tr>
-    <tr><th colspan="4">Things</th></tr>
-    <tr><th>Name</th><th>Color</th><th>Shape</th><th>Description</th></tr>
+    <tr>
+      <th colspan="4">Things<a href="{% url 'Things:add' 0 user.id %}" > Add</a></th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      {% if show_username %}<th>{{ "Username" }}</th>{% endif %}
+      <th>Color</th>
+      <th>Shape</th>
+      <th>Description</th>
+    </tr>
   </thead>
   <tbody>
     {% for thing in user_things %}
     <tr>
       <td>{{ thing.enName }}</td>
+      {% if show_username %}
+      <td>{{ thing.user.username }}</td>
+      {% endif %}
       <td>{{ thing.color.enName }}</td>
       <td>{{ thing.shape }}</td>
-      <td><a href="{% url 'Things:edit_description' thing.id %}" >{{ thing.description }}</a></td>
+      <td><a href="{% url 'Things:edit_description' thing.id thing.user_id %}" >{{ thing.description }}</a></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -24,5 +35,5 @@
   
 {% endif %}
 
-<a href="{% url 'Things:edit_name' 2 %}" >TestName 2</a>
-<a href="{% url 'Things:edit_name' 0 %}" >TestName add</a>
+<!-- <a href="{% url 'Things:edit_name' 2 %}" >TestName 2</a>
+<a href="{% url 'Things:edit_name' 0 %}" >TestName add</a> -->

@@ -8,7 +8,8 @@ urlpatterns = patterns('',
                        # single item root - detail flow
                        url(r'^edit_name/(?P<name_id>\d+)/$', views.edit_name, name='edit_name'),
                        url(r'^edit_name/(?P<name_id>0)/$', views.edit_name, name='add_name'),
-                       url(r'^(?P<thing_id>\d+)/$', views.edit_description, name='edit_description')
+                       url(r'^(?P<thing_id>0)/(?P<user_id>\d+)/$', views.edit_description, name='add'),
+                       url(r'^(?P<thing_id>\d+)/(?P<user_id>\d+)/$', views.edit_description, name='edit_description')
                        
 #                        url(r'^(?P<thing_id>\d+)/$', views.detail, name='detail'),
 #                        url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='detail')

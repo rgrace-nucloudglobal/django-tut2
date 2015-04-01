@@ -24,7 +24,7 @@ class Shape(models.Model):
 
 class Thing(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, blank=False)
-    enName = models.CharField(verbose_name='Name', max_length=200, blank=False)
+    enName = models.CharField(max_length=200, blank=False)
     color = models.ForeignKey(Color, blank=False)
     shape = models.ForeignKey(Shape, blank=False)
     description = models.CharField(max_length=100, null=True, blank=True)

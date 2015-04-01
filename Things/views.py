@@ -8,56 +8,64 @@ from django.core.urlresolvers import reverse
 # from django import forms
 from Things.forms import ThingForm, NameForm
 from operator import is_not
+from django.contrib.auth.models import User, UserManager
 # from django.template import RequestContext, loader
 
 # Create your views here.
 
 def index(request):
-    #     user = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-    #     colors = get_object_or_404(Color)
-    # if colors.coundt() == 0:
-    # return render(request, 'Things/index.html')
-    #
-    #     user_things = get_object_or_404(Thing).order_by('enName')
-    # shapes = get_object_or_404(Shape).order_by('enName')
+
     user = request.user
-    user_things = Thing.objects.filter(user_id=user.id).order_by('enName')[:5]
-    context = {'user_things': user_things, 'user': user}
+    if user.is_superuser:
+        user_things = Thing.objects.order_by('enName')
+    else:
+        user_things = Thing.objects.filter(user_id=user.id).order_by('enName')
+    
+    context = {'user_things': user_things, 'user': user, 'show_username': user.is_superuser}
     return render(request, 'Things/index.html', context)
 
-def edit_description(request, thing_id):
-    user = request.user
-    
-#     field_name = get_object_or_404(Thing, pk=thing_id)._meta.get_all_field_names()
-#     bvdfbvbcnbnvcn
-    
-    if int(thing_id) == 0:
-        thing = Thing()
-    else:
-        thing = get_object_or_404(Thing, pk=thing_id)
+def edit_description(request, thing_id, user_id):
     
     if request.method == 'POST':
+        if 'user_id' in request.POST and (request.POST['user_id'] is 'None' or int(request.POST['user_id']) == 0):
+            user = get_object_or_404(User, pk=user_id)
+        else:
+            user = get_object_or_404(User, pk=request.POST['user_id'])
+        xxxx = user.id
+        
         form = ThingForm()
         
-        thing = Thing(id=thing_id, user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
+        if thing_id is 'None' or int(thing_id) == 0:
+            thing = Thing(user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
+        else:
+            thing = Thing(id=request.POST['thing_id'], user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
+        
         thing.save()
-        thing = get_object_or_404(Thing, pk=thing_id)
+#         thing = get_object_or_404(Thing, pk=thing_id)
 #         if form.is_valid():
 #         - supposed to be able to pull down submitted form values using form.cleaned_data['input_name']
         return HttpResponseRedirect(reverse('Things:index'))
 #         else:
 #             thing = get_object_or_404(Thing, pk=thing_id)
     else:
+        if int(thing_id) == 0:
+            thing = Thing()
+        else:
+            thing = get_object_or_404(Thing, pk=thing_id)
+        
         form = ThingForm(thing)
-
+        user = request.user
+        
     colors = get_list_or_404(Color)
     shapes = get_list_or_404(Shape)
-    return render(request, 'Things/thing_description_form.html', {'form': form, 'thing': thing, 'colors': colors, 'shapes': shapes})
-#     return render(request, 'Things/thing_description_form_short.html', {'form': form})
+    users = User.objects.all()
+    return render(request, 'Things/thing_description_form.html', {'form': form, 'thing': thing, 'colors': colors, 'shapes': shapes, 'user': user, 'users': users, 'show_username': user.is_superuser})
 
 # def add_name(request):
     
-
+# def delete_thing(request, thing_id):
+    
+    
 def edit_name(request, name_id):
 #     testName = TestName(myName=request.method)
     if int(name_id) == 0:
