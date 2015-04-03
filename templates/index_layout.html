@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html id="layout_html">
+  <title>Django tutorial</title>
+  <head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/static/css/layout.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static '/static/css/style.css' %}" />
+    <script type="text/javascript" src="/static/js/jquery/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css" />
+  </head>
+  <body id="layout_body">
+    <table id="layout_table">
+      <thead id="layout_header">
+        <tr>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody id="layout_tbody">
+        <tr id="top_row">
+          <td id="top_left_cell">
+            {% block top_left %}
+            <!-- top left-->
+            <h1>top left</h1>
+            {% endblock top_left %}
+          </td>
+          <td id="top_right_cell">
+            {% block top_right %}
+            <h1>top right</h1>
+            {% endblock top_right %}
+          </td>
+        </tr>
+        <tr id="bottom_row">
+          <td id="bottom_left_cell">
+            {% block bottom_left %}
+            <h1>bottom left</h1>
+            {% endblock bottom_left %}
+          </td>
+          <td id="bottom_right_cell">
+            {% block bottom_right %}
+            <!-- bottom right-->
+            <h1>bottom right</h1>
+            {% endblock bottom_right %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
