@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+#layout_html {
+	height: 800px;
+	width: 800px;
+}
+#layout_body {
+  height: inherit;
+  width: inherit;
+}
+table#layout_table {
+	width: 800px;
+	height: 100%;
+/* 	height: 800px; */
+	border-collapse: collapse;
+	border: #000 solid 1px;
+}
+
+tr#top_row {
+	width: 800px;
+	height: 15%;
+}
+td#top_left_cell {
+  width: 20%;
+}
+td#top_right_cell {
+  width: 80%;
+}
+tr#bottom_row {
+  width: 800px;
+  height: 85%;
+}
+td#bottom_left_cell {
+  width: 20%;
+  height: 100%;
+}
+td#bottom_right_cell {
+  width: 80%;
+  height: 100%;
+}
