@@ -1,0 +1,28 @@
+{% extends "index_layout.html" %}
+{% block bottom_right %}
+<div>
+  <form action="" method="post" >
+  	{% csrf_token %}
+    <table class="edit ">
+      <thead>
+        <tr><th>Test Name</th></tr>
+        <tr>
+          <th>My Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input id="id_name_id" type="hidden" name="name_id" value="{{ testName.id }}">
+            <input id="id_myName" type="text" name="myName" value="{{ testName.myName }}">
+          </td>
+      </tbody>
+      <tfoot>
+      	<tr>
+    			<td><input id="id_save" type="submit" value="Save" name="submit"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </form>
+</div>
+{% endblock bottom_right %}

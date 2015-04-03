@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from Things.forms import ThingForm, NameForm
 from operator import is_not
 from django.contrib.auth.models import User, UserManager
-# from django.template import RequestContext, loader
+from django.template import RequestContext, loader
 
 # Create your views here.
 
@@ -26,7 +26,7 @@ def index(request):
     context = {'user_things': user_things, 'user': user, 'show_username': user.is_superuser}
     return render(request, 'Things/index.html', context)
 
-def edit_description(request, thing_id, user_id):
+def edit_thing(request, thing_id, user_id):
     
     if request.method == 'POST':
         if 'user_id' in request.POST and (request.POST['user_id'] is None or int(request.POST['user_id']) == 0):
@@ -59,7 +59,7 @@ def edit_description(request, thing_id, user_id):
     colors = get_list_or_404(Color)
     shapes = get_list_or_404(Shape)
     users = User.objects.all()
-    return render(request, 'Things/thing_description_form.html', {'form': form, 'thing': thing, 'colors': colors, 'shapes': shapes, 'user': user, 'users': users, 'show_username': user.is_superuser})
+    return render(request, 'Things/thing_edit_form.html', {'form': form, 'thing': thing, 'colors': colors, 'shapes': shapes, 'user': user, 'users': users, 'show_username': user.is_superuser})
 
 # def add_name(request):
     

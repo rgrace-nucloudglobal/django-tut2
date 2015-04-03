@@ -1,0 +1,10 @@
+{% extends "index_layout.html" %}
+{% block bottom_right %}
+<div>
+  <form action="" method="post" >
+  	{% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" >
+  </form>
+</div>
+{% endblock bottom_right %}

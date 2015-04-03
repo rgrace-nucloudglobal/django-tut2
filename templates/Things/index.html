@@ -1,0 +1,62 @@
+{% extends "index_layout.html" %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+<script type="text/javascript" src="/static/js/jquery/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="/static/js/jquery/DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css" />
+<script type="text/javascript">
+<!--
+ $(document).ready(function() {
+   $("#things_index").DataTable({
+     'deferRender': false,
+     'deferLoading': false,
+     'dom': '<rtp>'
+   });
+ });
+function be_happy() {
+  alert("Be Happy!");
+}
+//-->
+</script>
+
+
+{% block bottom_right %}
+<div>
+{% if user_things %}
+  <table id="things_index">
+    <thead>
+      <tr><th colspan="4">User: {{ user }}</th></tr>
+      <tr>
+        <th colspan="4">Things<a href="{% url 'Things:add' 0 user.id %}" > Add</a></th>
+      </tr>
+      <tr>
+        <th>Name</th>
+        {% if show_username %}<th>{{ "Username" }}</th>{% endif %}
+        <th>Color</th>
+        <th>Shape</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for thing in user_things %}
+      <tr>
+        <td>{{ thing.enName }}</td>
+        {% if show_username %}
+        <td>{{ thing.user.username }}</td>
+        {% endif %}
+        <td>{{ thing.color.enName }}</td>
+        <td>{{ thing.shape }}</td>
+        <td><a href="{% url 'Things:edit_thing' thing.id thing.user_id %}" >{{ thing.description }}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>User has no things</p>
+</div>
+{% endif %}
+<a href="{% url 'user:logout' %}" >Logout</a>
+<a href="{% url 'index' %}" >Home</a>
+<!-- <a href="{% url 'Things:edit_name' 2 %}" >TestName 2</a>
+<a href="{% url 'Things:edit_name' 0 %}" >TestName add</a> -->
+{% endblock bottom_right %}

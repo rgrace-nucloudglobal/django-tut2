@@ -1,0 +1,38 @@
+{% load staticfiles %}
+
+<form action="{% url 'Things:save' user_thing.id %}" method="post">
+  <table class="edit ">
+    <thead>
+      <tr colspan="4"><th>Thing</th></tr>
+      <tr>
+        <th>Name</th><th>Color</th><th>Shape</th><th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="text" name="enName{{ user_thing.id }}" value="{{ user_thing.enName }}"></td>
+        <td>
+          <select name="color{{ user_thing.id }}" >
+          {% for color in colors %}
+            <option value="{{ color.id }}" >{{ color.enName }}</option>
+          {% endfor %}
+          </select>
+        </td>
+        <td>
+          </select> &nbsp 
+          <select name="shape{{ user_thing.id }}" >
+          {% for shape in shapes %}
+            <option value="{{ shape.id }}" >{{ shape.enName }}</option>
+          {% endfor %}
+          </select>
+        </td>
+        <td>
+          <textarea name="description{{ user_thing.id }}">{{ user_thing.description }}</textarea>
+          <a href="{% url 'Things:update_description' user_thing.id %}" >{{ thing.description }}</a>
+        </td>
+    </tbody>
+    <tfoot>
+      <tr><td><input type="submit" value="save"></td></tr>
+    </tfoot>
+  </table>
+</form>
