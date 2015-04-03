@@ -1,4 +1,0 @@
-<!-- <label>{{ colors[thing.color.id].enName }}</label>
-      <label>{{ colors[thing.color.id].enName }}</label>
-      <label>{{ thing.description }}</label> -->
-      <!--a href="{$ url 'Things:detail' thing.id %}>{{ thing.enName}}</a-->
