@@ -1,0 +1,19 @@
+{% extends "index_layout.html" %}
+{% load staticfiles %}
+
+{% block bottom_left %}
+<table>
+  <thead>
+    <tr>
+      <th>Menu</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for url in urls %}
+    <tr>
+      <td><a href="{% url url.url_name %}" >{{ url.name }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock bottom_left %}
