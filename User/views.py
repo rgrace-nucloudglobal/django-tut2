@@ -7,9 +7,11 @@ from User.forms import UserLogin
 
 # Create your views here.
 def index(request):
-#     user = request.user
-#     if not user.is_authenticated():
-    return HttpResponseRedirect(reverse('user:login'))
+    user = request.user
+    if not user.is_authenticated():
+        return HttpResponseRedirect(reverse('user:login'))
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 def Login(request):
     #     user = request.user
