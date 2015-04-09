@@ -6,7 +6,7 @@ from django.core.context_processors import request
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 # from django import forms
-from Things.forms import ThingForm, NameForm
+from Things.forms import ThingForm, NameForm, ThingColorForm
 from operator import is_not
 from django.contrib.auth.models import User, UserManager
 from django.template import RequestContext, loader
@@ -106,6 +106,50 @@ def edit_name(request, name_id):
 #     context = {'user_thing': user_thing, 'colors': colors, 'shapes': shapes}
 # context = {'user_thing': user_thing}
 #     return render(request, 'Things/detail.html', context)
+
+def colors_list(request):
+    
+    user = request.user
+    if request.method == 'POST':
+        # handle post requests here
+        pass
+    else:
+        # handle non-post requests here
+        colors = get_list_or_404(Color)
+    
+    context = {'colors': colors, 'user': user}
+    return render(request, 'Things/colors_index.html', context)
+
+def edit_color(request, user_id, color_id):
+    user = get_object_or_404(User, pk=user_id)
+#     color_id
+    if request.method == 'POST':
+        # handle post requests here
+        
+        form = ThingColorForm()
+        
+        if color_id is None or int(color_id) == 0:
+            color = Color(enName=request.POST['enName'], description=request.POST['description'])
+        else:
+            color = Color(id=request.POST['color_id'], enName=request.POST['enName'], description=request.POST['description'])
+        
+        color.save()
+        
+        return HttpResponseRedirect(reverse('Things:colors'))
+        
+    else:
+        # handle non-post requests here
+        if int(color_id) == 0:
+            color = Color()
+        else:
+            color = get_object_or_404(Color, pk=color_id)
+            
+        form = ThingColorForm(color)
+        user = request.user
+        
+    context = {'form': form, 'color': color, 'user': user}
+    return render(request, 'Things/thing_color_edit_form.html', context)
+    
 
 def save(request, thing_id):
     #  add exception handling

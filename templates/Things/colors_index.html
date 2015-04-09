@@ -7,7 +7,7 @@
 <script type="text/javascript">
 <!--
   $(document).ready(function() {
-   $("#things_index").DataTable({
+   $("#colors_index").DataTable({
      'deferRender': false,
      'deferLoading': false,
      'dom': '<rtp>'
@@ -27,31 +27,23 @@
 
 {% block bottom_right %}
 <div>
-{% if user_things %}
-  <table id="things_index">
+{% if colors %}
+  <table id="colors_index">
     <thead>
       <tr><th colspan="4">User: {{ user }}</th></tr>
       <tr>
-        <th colspan="4">Things<a href="{% url 'Things:add' 0 user.id %}" > Add</a></th>
+        <th colspan="4">Colors<a href="{% url 'Things:add_color' user.id 0 %}" > Add</a></th>
       </tr>
       <tr>
         <th>Name</th>
-        {% if show_username %}<th>{{ "Username" }}</th>{% endif %}
-        <th>Color</th>
-        <th>Shape</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
-      {% for thing in user_things %}
+      {% for color in colors %}
       <tr>
-        <td><a href="{% url 'Things:edit_thing' thing.id thing.user_id %}" >{{ thing.enName }}</a></td>
-        {% if show_username %}
-        <td>{{ thing.user.username }}</td>
-        {% endif %}
-        <td>{{ thing.color.enName }}</td>
-        <td>{{ thing.shape }}</td>
-        <td>{{ thing.description }}</td>
+        <td><a href="{% url 'Things:edit_color' user.id color.id %}" >{{ color.enName }}</a></td>
+        <td>{{ color.description }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -61,8 +53,6 @@
 </div>
 {% endif %}
 
-<!-- <a href="{% url 'Things:edit_name' 2 %}" >TestName 2</a>
-<a href="{% url 'Things:edit_name' 0 %}" >TestName add</a> -->
 {% endblock bottom_right %}
 
 {% block things_links %}

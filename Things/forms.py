@@ -9,6 +9,10 @@ class ThingForm(forms.Form):
     shape_id = forms.IntegerField(label='Shape id')
     description = forms.CharField(label='Description', max_length=100)
 
+class ThingColorForm(forms.Form):
+    color_id = forms.IntegerField(label='Color Id')
+    enName = forms.CharField(label='EnName')
+    description = forms.CharField(label='Description', max_length=100)
 
 class NameForm(forms.Form):
     name_id = forms.CharField(label='Id', required=False)

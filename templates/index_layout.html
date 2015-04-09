@@ -35,6 +35,25 @@
           <td id="bottom_left_cell">
             {% block bottom_left %}
             <h1>bottom left</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2"></th>
+                  <th class="noDisplay"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2"><a href="{% url 'Things:index' %}" >Things list</a></td>
+                  <td class="noDisplay"></td>
+                </tr>
+                <tr><td ></td><td>Links here</td></tr>
+                <tr><td ></td><td>...And here</td></tr>
+                <tr><td ></td><td>...And here</td></tr>
+                {% block things_links %}
+                {% endblock things_links %}
+              </tbody>
+            </table>
             {% endblock bottom_left %}
           </td>
           <td id="bottom_right_cell">
@@ -45,6 +64,14 @@
           </td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">
+            <a href="{% url 'user:logout' %}" >Logout</a>
+            <a href="{% url 'index' %}" >Home</a>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </body>
 </html>
