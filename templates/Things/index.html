@@ -6,16 +6,21 @@
 <link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css" />
 <script type="text/javascript">
 <!--
- $(document).ready(function() {
+  $(document).ready(function() {
    $("#things_index").DataTable({
      'deferRender': false,
      'deferLoading': false,
      'dom': '<rtp>'
    });
- });
-function be_happy() {
-  alert("Be Happy!");
-}
+  });
+
+  function things_index_delete_verify(this) {
+    var result window.confirm("Are you sure ?");
+    if((result == true)) {
+      
+    }
+  }
+
 //-->
 </script>
 

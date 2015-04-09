@@ -1,14 +1,14 @@
 @CHARSET "UTF-8";
 #layout_html {
 	height: 800px;
-	width: 800px;
+	width: 1000px;
 }
 #layout_body {
   height: inherit;
   width: inherit;
 }
 table#layout_table {
-	width: 800px;
+	width: 1000px;
 	height: 100%;
 /* 	height: 800px; */
 	border-collapse: collapse;
@@ -16,24 +16,32 @@ table#layout_table {
 }
 
 tr#top_row {
-	width: 800px;
+	width: 1000px;
 	height: 15%;
 }
 td#top_left_cell {
   width: 20%;
+  border-collapse: collapse;
+  border: #000 solid 1px;
 }
 td#top_right_cell {
   width: 80%;
+  border-collapse: collapse;
+  border: #000 solid 1px;
 }
 tr#bottom_row {
-  width: 800px;
+  width: 1000px;
   height: 85%;
 }
 td#bottom_left_cell {
   width: 20%;
   height: 100%;
+  border-collapse: collapse;
+  border: #000 solid 1px;
 }
 td#bottom_right_cell {
   width: 80%;
   height: 100%;
+  border-collapse: collapse;
+  border: #000 solid 1px;
 }
