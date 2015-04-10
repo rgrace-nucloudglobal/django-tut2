@@ -14,6 +14,12 @@ class ThingColorForm(forms.Form):
     enName = forms.CharField(label='EnName')
     description = forms.CharField(label='Description', max_length=100)
 
+
+class ThingShapeForm(forms.Form):
+    shape_id = forms.IntegerField(label='Shape Id')
+    enName = forms.CharField(label='EnName')
+    description = forms.CharField(label='Description', max_length=100)
+
 class NameForm(forms.Form):
     name_id = forms.CharField(label='Id', required=False)
     myName = forms.CharField(label='MyName')

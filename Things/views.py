@@ -6,12 +6,10 @@ from django.core.context_processors import request
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 # from django import forms
-from Things.forms import ThingForm, NameForm, ThingColorForm
+from Things.forms import ThingForm, NameForm, ThingColorForm, ThingShapeForm
 from operator import is_not
 from django.contrib.auth.models import User, UserManager
 from django.template import RequestContext, loader
-
-# Create your views here.
 
 def index(request):
 
@@ -22,25 +20,28 @@ def index(request):
         user_things = Thing.objects.order_by('enName')
     else:
         user_things = Thing.objects.filter(user_id=user.id).order_by('enName')
-    
-    context = {'user_things': user_things, 'user': user, 'show_username': user.is_superuser}
+
+    context = {'user_things': user_things, 'user': user,
+               'show_username': user.is_superuser}
     return render(request, 'Things/index.html', context)
 
 def edit_thing(request, thing_id, user_id):
-    
+
     if request.method == 'POST':
         if 'user_id' in request.POST and (request.POST['user_id'] is None or int(request.POST['user_id']) == 0):
             user = get_object_or_404(User, pk=user_id)
         else:
             user = get_object_or_404(User, pk=request.POST['user_id'])
-        
+
         form = ThingForm()
-        
+
         if thing_id is None or int(thing_id) == 0:
-            thing = Thing(user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
+            thing = Thing(user_id=user.id, enName=request.POST['enName'], color_id=request.POST[
+                          'color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
         else:
-            thing = Thing(id=request.POST['thing_id'], user_id=user.id, enName=request.POST['enName'], color_id=request.POST['color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
-        
+            thing = Thing(id=request.POST['thing_id'], user_id=user.id, enName=request.POST['enName'], color_id=request.POST[
+                          'color_id'], shape_id=request.POST['shape_id'], description=request.POST['description'])
+
         thing.save()
 #         thing = get_object_or_404(Thing, pk=thing_id)
 #         if form.is_valid():
@@ -52,63 +53,17 @@ def edit_thing(request, thing_id, user_id):
             thing = Thing()
         else:
             thing = get_object_or_404(Thing, pk=thing_id)
-        
+
         form = ThingForm(thing)
         user = request.user
-        
+
     colors = get_list_or_404(Color)
     shapes = get_list_or_404(Shape)
     users = User.objects.all()
     return render(request, 'Things/thing_edit_form.html', {'form': form, 'thing': thing, 'colors': colors, 'shapes': shapes, 'user': user, 'users': users, 'show_username': user.is_superuser})
 
-# def add_name(request):
-    
-# def delete_thing(request, thing_id):
-    
-    
-def edit_name(request, name_id):
-#     testName = TestName(myName=request.method)
-    if int(name_id) == 0:
-        testName = TestName(myName=None)
-    else:
-        testName = get_object_or_404(TestName, pk=name_id)
-    
-    if request.method == 'POST':
-        form = NameForm(request.POST)
-        
-        testName = TestName(id=request.POST['name_id'], myName=request.POST['myName'])
-        testName.save()
-#         if form.is_valid():
-#             testName = TestName(id=form.cleaned_data['name_id'], myName=form.cleaned_data['myName'])
-#             testName.save()
-    else:
-#         testName = get_object_or_404(TestName, pk=name_id)
-#         testName = TestName()
-        form = NameForm()
-
-    return render(request, 'Things/TestName_form.html', {'form': form, 'testName': testName})
-
-# def detail(request, thing_id):
-# return render(request, 'Things:detail.html', {'thing': old_thing,
-# 'error_message': 'Failed attempt to persist changes'})
-
-
-#     if thing_id is None:
-#         return render(request, 'Things/detail.html', {'message': 'fshldjfsgh'})
-#     else:
-#     else:
-#         user_thing = Thing.__init__(self)
-#     user = request.user
-#     user_thing = get_object_or_404(Thing, pk=1)
-#
-#     colors = get_list_or_404(Color)
-#     shapes = get_list_or_404(Shape)
-#     context = {'user_thing': user_thing, 'colors': colors, 'shapes': shapes}
-# context = {'user_thing': user_thing}
-#     return render(request, 'Things/detail.html', context)
-
 def colors_list(request):
-    
+
     user = request.user
     if request.method == 'POST':
         # handle post requests here
@@ -116,71 +71,80 @@ def colors_list(request):
     else:
         # handle non-post requests here
         colors = get_list_or_404(Color)
-    
+
     context = {'colors': colors, 'user': user}
     return render(request, 'Things/colors_index.html', context)
 
 def edit_color(request, user_id, color_id):
     user = get_object_or_404(User, pk=user_id)
-#     color_id
+
     if request.method == 'POST':
         # handle post requests here
-        
+
         form = ThingColorForm()
-        
+
         if color_id is None or int(color_id) == 0:
-            color = Color(enName=request.POST['enName'], description=request.POST['description'])
+            color = Color(
+                enName=request.POST['enName'], description=request.POST['description'])
         else:
-            color = Color(id=request.POST['color_id'], enName=request.POST['enName'], description=request.POST['description'])
-        
+            color = Color(id=request.POST['color_id'], enName=request.POST[
+                          'enName'], description=request.POST['description'])
+
         color.save()
-        
+
         return HttpResponseRedirect(reverse('Things:colors'))
-        
+
     else:
         # handle non-post requests here
         if int(color_id) == 0:
             color = Color()
         else:
             color = get_object_or_404(Color, pk=color_id)
-            
+
         form = ThingColorForm(color)
         user = request.user
-        
+
     context = {'form': form, 'color': color, 'user': user}
     return render(request, 'Things/thing_color_edit_form.html', context)
-    
 
-def save(request, thing_id):
-    #  add exception handling
-    SaveException = SaveException
-    old_thing = get_object_or_404(Thing, pk=thing_id)
-    try:
-        old_thing.color_set.get(pk=request.POST['color'])
-        old_thing.shape_set.get(pk=request.POST['shape'])
-        old_thing.description_set(request.POST['description'])
-        old_thing.save()
-    except (KeyError, Exception):
-        return render(request, 'Things:detail.html', {'thing': old_thing, 'error_message': 'Failed attempt to persist changes'})
+
+def shapes_list(request):
+
+    user = request.user
+
+    shapes = get_list_or_404(Shape)
+
+    context = {'shapes': shapes, 'user': user}
+    return render(request, 'Things/shapes_index.html', context)
+
+def edit_shape(request, user_id, shape_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    if request.method == 'POST':
+        # handle post requests here
+
+        form = ThingShapeForm()
+
+        if shape_id is None or int(shape_id) == 0:
+            shape = Shape(
+                enName=request.POST['enName'], description=request.POST['description'])
+        else:
+            shape = Shape(id=request.POST['shape_id'], enName=request.POST[
+                          'enName'], description=request.POST['description'])
+
+        shape.save()
+
+        return HttpResponseRedirect(reverse('Things:shapes'))
 
     else:
-        return HttpResponseRedirect(reverse('Things:detail.html', args=(thing_id)))
+        # handle non-post requests here
+        if int(shape_id) == 0:
+            shape = Color()
+        else:
+            shape = get_object_or_404(Shape, pk=shape_id)
 
+        form = ThingColorForm(shape)
+        user = request.user
 
-# class IndexView(generic.ListView):
-#     template_name = 'Things/index.html'
-#     context_object_name = 'user_things'
-#
-#     def get_queryset(self):
-#         """List user's things"""
-#         user_things = Thing.objects.filter(user_id=1).order_by('enName')[:5]
-#         return user_things
-
-
-# class DetailView(generic.DetailView):
-#     model = Thing
-#     template_name = 'Things/detail.html'
-
-class SaveException(Exception):
-
-    """an attept to persist changes failed"""
+    context = {'form': form, 'shape': shape, 'user': user}
+    return render(request, 'Things/thing_shape_edit_form.html', context)

@@ -1,29 +1,26 @@
 {% extends "index_layout.html" %}
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
-<script type="text/javascript" src="/static/js/jquery/jquery-1.11.2.js"></script>
-<script type="text/javascript" src="/static/js/jquery/DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css" />
-<script type="text/javascript">
-<!--
-  $(document).ready(function() {
-   $("#colors_index").DataTable({
-     'deferRender': false,
-     'deferLoading': false,
-     'dom': '<rtp>'
-   });
-  });
-
-  function things_index_delete_verify(this) {
-    var result window.confirm("Are you sure ?");
-    if((result == true)) {
-      
-    }
-  }
-
-//-->
-</script>
-
+{% block css %}
+  {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+{% endblock css %}
+{% block external_script %}
+  {{ block.super }}
+{% endblock external_script %}
+{% block javascript_top %}
+  {{ block.super }}
+{% endblock javascript_top %}
+{% block jq_doc_ready %}
+    {{ block.super  }}
+        $("#colors_index").DataTable({
+         'deferRender': false,
+         'deferLoading': false,
+         'dom': '<rtp>'
+        });
+{% endblock jq_doc_ready %}
+{% block javascript_bottom %}
+  {{ block.super }}  
+{% endblock javascript_bottom %}
 
 {% block bottom_right %}
 <div>
@@ -49,12 +46,8 @@
     </tbody>
   </table>
 {% else %}
-  <p>User has no things</p>
+  <p>There are no colors</p>
 </div>
 {% endif %}
 
 {% endblock bottom_right %}
-
-{% block things_links %}
-<tr><td ></td><td><a href="{% url 'Things:colors' %}" >Colors list</a></td></tr>
-{% endblock things_links %}

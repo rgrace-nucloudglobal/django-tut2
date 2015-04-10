@@ -11,8 +11,8 @@ def index(request):
         #         URL_LIST = None
         #         urls = get_urls()
         urls = [{'name': 'User', 'url_name': 'user:index'},
-                {'name': 'Things', 'url_name': 'Things:index'},
-                {'name': 'Name', 'url_name': 'name:index'}
+                {'name': 'Things', 'url_name': 'Things:index'}
                 ]
         context = {'urls': urls, 'user': user}
+        
         return render(request, 'django_tut2_1/index.html', context)

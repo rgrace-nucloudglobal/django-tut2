@@ -3,11 +3,33 @@
   <title>Django tutorial</title>
   <head>
     {% load staticfiles %}
+    {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static '/static/css/layout.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static '/static/css/style.css' %}" />
+    {% endblock css %}
+    {% block external_script %}
     <script type="text/javascript" src="/static/js/jquery/jquery-1.11.2.js"></script>
     <script type="text/javascript" src="/static/js/jquery/DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css" />
+    {% endblock external_script %}
+    <script type="text/javascript">
+    <!--
+    {% block javascript_top %}
+    {% endblock javascript_top %}
+      
+      $(document).ready(function() {
+    {% block jq_doc_ready %}
+      $("#layout_table td").css("vertical-align", "top")
+    {% endblock jq_doc_ready %}
+      });
+    {% block javascript_bottom %}
+     
+      function test() {
+        var a = "sdfsdfdsdfsdsd";
+      }
+    {% endblock javascript_bottom %}
+    //-->
+    </script>
   </head>
   <body id="layout_body">
     <table id="layout_table">
@@ -21,7 +43,6 @@
         <tr id="top_row">
           <td id="top_left_cell">
             {% block top_left %}
-            <!-- top left-->
             <h1>top left</h1>
             {% endblock top_left %}
           </td>
@@ -51,6 +72,7 @@
                 <tr><td ></td><td>...And here</td></tr>
                 <tr><td ></td><td>...And here</td></tr>
                 {% block things_links %}
+                {% include "Things/links.html" %}
                 {% endblock things_links %}
               </tbody>
             </table>

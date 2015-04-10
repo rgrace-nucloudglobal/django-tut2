@@ -1,16 +1,39 @@
 {% extends "index_layout.html" %}
 {% load staticfiles %}
+{% block css %}
+  {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+{% endblock css %}
+{% block external_script %}
+  {{ block.super }}
+{% endblock external_script %}
+{% block javascript_top %}
+  {{ block.super }}
+{% endblock javascript_top %}
+{% block jq_doc_ready %}
+    {{ block.super }}
+        $("#things_index").DataTable({
+         'deferRender': false,
+         'deferLoading': false,
+         'dom': '<rtp>'
+        });
+{% endblock jq_doc_ready %}
+{% block javascript_bottom %}
+  {{ block.super }}
+{% endblock javascript_bottom %}
 
 {% block bottom_left %}
 <table>
   <thead>
     <tr>
-      <th>Menu</th>
+      <th colspan="2">Menu</th>
+      <th class="noDisplay"></th>
     </tr>
   </thead>
   <tbody>
     {% for url in urls %}
     <tr>
+      <td class="noDisplay"></td>
       <td><a href="{% url url.url_name %}" >{{ url.name }}</a></td>
     </tr>
     {% endfor %}
