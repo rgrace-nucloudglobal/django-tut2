@@ -1,0 +1,218 @@
+{% extends "index_layout.html" %}
+{% load staticfiles %}
+{% block css %}
+  {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="/static/js/jquery/ui/1.11.4.custom/jquery-ui.css" />
+    <style>
+    //things
+    table#things_index thead th#name_header {
+      width: 75px;
+    }
+    {% if show_username %}
+    table#things_index thead th#username_header {
+      width: 100px;
+    }
+    {% endif %}
+    table#things_index thead th#color_header {
+      width: 75px;
+    }
+    table#things_index thead th#shape_header {
+      width: 75px;
+    }
+    table#things_index thead th#description_header {
+      /* width: auto; */
+    }
+    div#things_index_wrapper div#things_index_filter {
+      width: 100%;
+      text-align: center;
+    }
+    
+    // shapes
+    table#shapes_index thead th#name_header {
+      width: 75px;
+    }
+    table#shapes_index thead th#description_header {
+      /* width: auto; */
+    }
+    div#shapes_index_wrapper div#shapes_index_filter {
+      width: 100%;
+      text-align: center;
+    }
+    
+    // colors
+    table#colors_index thead th#name_header {
+      width: 75px;
+    }
+    table#colors_index thead th#description_header {
+      /* width: auto; */
+    }
+    div#colors_index_wrapper div#colors_index_filter {
+      width: 100%;
+      text-align: center;
+    }
+    
+    </style>
+    
+<!--
+
+//-->
+</script>
+{% endblock css %}
+{% block external_script %}
+  {{ block.super }}
+  <script type="text/javascript" src="/static/js/jquery/ui/1.11.4.custom/jquery-ui.js"></script>
+{% endblock external_script %}
+{% block javascript_top %}
+  {{ block.super }}
+{% endblock javascript_top %}
+{% block jq_doc_ready %}
+    {{ block.super }}
+        $("#things_index").DataTable({
+         "paging": true,
+         "pagingType": "simple_numbers",
+         "pageLength": 11,
+         "displayStart": 0,
+         "scrollY": "400",
+         "scrollCollapse": false,
+         "deferRender": true,
+         "deferLoading": {{ user_things.count }},
+         "autoWidth": false,
+         "dom": "frtp"/*,
+         "jQueryUI": true*/
+        });
+        
+        $("#shapes_index").DataTable({
+         "paging": true,
+         "pagingType": "simple_numbers",
+         "pageLength": 11,
+         "displayStart": 0,
+         "scrollY": "400",
+         "scrollCollapse": false,
+         "deferRender": true,
+         "deferLoading": {{ shapes|length }},
+         "autoWidth": false,
+         "dom": "frtp"/*,
+         "jQueryUI": true*/
+        });
+        
+        $("#colors_index").DataTable({
+         "paging": true,
+         "pagingType": "simple_numbers",
+         "pageLength": 11,
+         "displayStart": 0,
+         "scrollY": "400",
+         "scrollCollapse": false,
+         "deferRender": true,
+         "deferLoading": {{ colors|length }},
+         "autoWidth": false,
+         "dom": "frtp"/*,
+         "jQueryUI": true*/
+        });
+        
+        $("#thing_tabs").tabs();
+        
+        var x = $("#xxx");
+{% endblock jq_doc_ready %}
+{% block javascript_bottom %}
+  {{ block.super }}  
+{% endblock javascript_bottom %}
+
+{% block bottom_right %}
+<div id="thing_tabs">
+  <ul>
+    <li ><a href="#things_tab"><span>Things</span></a></li>
+    <li ><a href="#shapes_tab"><span>Shapes</span></a></li>
+    <li ><a href="#colors_tab"><span>Colors</span></a></li>
+  </ul>
+{% if user_things %}
+  <div id="things_tab">
+    <table id="things_index">
+      <thead>
+        <tr><th colspan="5">User: {{ user }}</th></tr>
+        <tr>
+          <th colspan="5">Things<a href="{% url 'Things:add' 0 user.id %}" > Add</a></th>
+        </tr>
+        <tr>
+          <th id="name_header">Name</th>
+          {% if show_username %}<th id="username_header">{{ "Username" }}</th>{% endif %}
+          <th id="color_header">Color</th>
+          <th id="shape_header">Shape</th>
+          <th id="description_header">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user_thing in user_things %}
+        <tr>
+          <td><a href="{% url 'Things:edit_thing' user_thing.id user_thing.user_id %}" >{{ user_thing.enName }}</a></td>
+          {% if show_username %}<th>{{ user_thing.user.username }}</th>{% endif %}
+          <td>{{ user_thing.color.enName }}</td>
+          <td>{{ user_thing.shape }}</td>
+          <td>{{ user_thing.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><a href="{% url 'Things:index' %}?display_mode=TABS" >Tabs</a></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div id="shapes_tab">
+  {% if shapes %}
+    <table id="shapes_index">
+      <thead>
+        <tr><th colspan="4">User: {{ user }}</th></tr>
+        <tr>
+          <th colspan="4">Shapes<a href="{% url 'Things:add_shape' user.id 0 %}" > Add</a></th>
+        </tr>
+        <tr>
+          <th id="name_header">Name</th>
+          <th id="description_header">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for shape in shapes %}
+        <tr>
+          <td><a href="{% url 'Things:edit_shape' user.id shape.id %}" >{{ shape.enName }}</a></td>
+          <td>{{ shape.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>There are no shapes</p>
+  {% endif %}
+  </div>
+  <div id="colors_tab">
+  {% if colors %}
+    <table id="colors_index">
+      <thead>
+        <tr><th colspan="4">User: {{ user }}</th></tr>
+        <tr>
+          <th colspan="4">Colors<a href="{% url 'Things:add_color' user.id 0 %}" > Add</a></th>
+        </tr>
+        <tr>
+          <th id="name_header">Name</th>
+          <th id="description_header">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for color in colors %}
+        <tr>
+          <td><a href="{% url 'Things:edit_color' user.id color.id %}" >{{ color.enName }}</a></td>
+          <td>{{ color.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>There are no colors</p>
+    {% endif %}
+  </div>
+{% else %}
+  <p>User has no colors</p>
+{% endif %}
+</div>
+{% endblock bottom_right %}

@@ -3,6 +3,29 @@
 {% block css %}
   {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+    <style>
+    table#things_index thead th#name_header {
+      width: 75px;
+    }
+    {% if show_username %}
+    table#things_index thead th#username_header {
+      width: 100px;
+    }
+    {% endif %}
+    table#things_index thead th#color_header {
+      width: 75px;
+    }
+    table#things_index thead th#shape_header {
+      width: 75px;
+    }
+    table#things_index thead th#description_header {
+      /* width: auto; */
+    }
+    div#things_index_wrapper div#things_index_filter {
+      width: 100%;
+      text-align: center;
+    }
+    </style>
 {% endblock css %}
 {% block external_script %}
   {{ block.super }}
@@ -13,11 +36,18 @@
 {% block jq_doc_ready %}
     {{ block.super }}
         $("#things_index").DataTable({
-         'deferRender': false,
-         'deferLoading': false,
-         'autowidth': false,
-         'dom': '<rtp>'
+         "paging": true,
+         "pagingType": "simple_numbers",
+         "pageLength": 11,
+         "displayStart": 12,
+         "scrollY": "400",
+         "scrollCollapse": false,
+         "deferRender": true,
+         "deferLoading": {{ user_things.count }},
+         "autoWidth": false,
+         "dom": 'frtp'
         });
+        var x = $("#xxx");
 {% endblock jq_doc_ready %}
 {% block javascript_bottom %}
   {{ block.super }}  
@@ -33,26 +63,29 @@
         <th colspan="5">Things<a href="{% url 'Things:add' 0 user.id %}" > Add</a></th>
       </tr>
       <tr>
-        <th>Name</th>
-        {% if show_username %}<th>{{ "Username" }}</th>{% endif %}
-        <th>Color</th>
-        <th>Shape</th>
-        <th>Description</th>
+        <th id="name_header">Name</th>
+        {% if show_username %}<th id="username_header">{{ "Username" }}</th>{% endif %}
+        <th id="color_header">Color</th>
+        <th id="shape_header">Shape</th>
+        <th id="description_header">Description</th>
       </tr>
     </thead>
     <tbody>
-      {% for thing in user_things %}
+      {% for user_thing in user_things %}
       <tr>
-        <td><a href="{% url 'Things:edit_thing' thing.id thing.user_id %}" >{{ thing.enName }}</a></td>
-        {% if show_username %}
-        <td>{{ thing.user.username }}</td>
-        {% endif %}
-        <td>{{ thing.color.enName }}</td>
-        <td>{{ thing.shape }}</td>
-        <td>{{ thing.description }}</td>
+        <td><a href="{% url 'Things:edit_thing' user_thing.id user_thing.user_id %}" >{{ user_thing.enName }}</a></td>
+        {% if show_username %}<th>{{ user_thing.user.username }}</th>{% endif %}
+        <td>{{ user_thing.color.enName }}</td>
+        <td>{{ user_thing.shape }}</td>
+        <td>{{ user_thing.description }}</td>
       </tr>
       {% endfor %}
     </tbody>
+    <tfoot>
+      <tr>
+        <td><a href="{% url 'Things:index' %}?display_mode=TABS" >Tabs</a></td>
+      </tr>
+    </tfoot>
   </table>
 {% else %}
   <p>User has no things</p>

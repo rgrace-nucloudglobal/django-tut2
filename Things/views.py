@@ -10,6 +10,8 @@ from Things.forms import ThingForm, NameForm, ThingColorForm, ThingShapeForm
 from operator import is_not
 from django.contrib.auth.models import User, UserManager
 from django.template import RequestContext, loader
+from django.contrib.auth.context_processors import auth
+
 
 def index(request):
 
@@ -20,10 +22,28 @@ def index(request):
         user_things = Thing.objects.order_by('enName')
     else:
         user_things = Thing.objects.filter(user_id=user.id).order_by('enName')
-
-    context = {'user_things': user_things, 'user': user,
+    
+    if user.is_superuser:
+#         users_all = User.objects.all().order_by('username')
+        
+        for user_thing in user_things:
+            y = dir(user_thing.user)
+            x = user_thing.user.username
+        
+    else:
+        users_all = None
+    
+    
+    if is_not(request.GET.get('display_mode'), None):
+        colors = get_list_or_404(Color)
+        shapes = get_list_or_404(Shape)
+        context = {'user_things': user_things, 'user': user,
+               'show_username': user.is_superuser, 'colors': colors, 'shapes': shapes}
+        return render(request, 'Things/index_tabs.html', context)
+    else:
+        context = {'user_things': user_things, 'user': user,
                'show_username': user.is_superuser}
-    return render(request, 'Things/index.html', context)
+        return render(request, 'Things/index.html', context)
 
 def edit_thing(request, thing_id, user_id):
 
@@ -113,7 +133,7 @@ def shapes_list(request):
     user = request.user
 
     shapes = get_list_or_404(Shape)
-
+    
     context = {'shapes': shapes, 'user': user}
     return render(request, 'Things/shapes_index.html', context)
 

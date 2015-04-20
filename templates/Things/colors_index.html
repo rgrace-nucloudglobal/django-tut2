@@ -3,6 +3,18 @@
 {% block css %}
   {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'Things/style.css' %}" />
+    <style>
+    table#colors_index thead th#name_header {
+      width: 75px;
+    }
+    table#colors_index thead th#description_header {
+      /* width: auto; */
+    }
+    div#colors_index_wrapper div#colors_index_filter {
+      width: 100%;
+      text-align: center;
+    }
+    </style>
 {% endblock css %}
 {% block external_script %}
   {{ block.super }}
@@ -13,9 +25,16 @@
 {% block jq_doc_ready %}
     {{ block.super  }}
         $("#colors_index").DataTable({
-         'deferRender': false,
-         'deferLoading': false,
-         'dom': '<rtp>'
+         "paging": true,
+         "pagingType": "simple_numbers",
+         "pageLength": 11,
+         "displayStart": 12,
+         "scrollY": "400",
+         "scrollCollapse": false,
+         "deferRender": true,
+         "deferLoading": {{ colors|length }},
+         "autoWidth": false,
+         "dom": "frtp"
         });
 {% endblock jq_doc_ready %}
 {% block javascript_bottom %}
@@ -32,8 +51,8 @@
         <th colspan="4">Colors<a href="{% url 'Things:add_color' user.id 0 %}" > Add</a></th>
       </tr>
       <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th id="name_header">Name</th>
+        <th id="description_header">Description</th>
       </tr>
     </thead>
     <tbody>
@@ -47,7 +66,6 @@
   </table>
 {% else %}
   <p>There are no colors</p>
-</div>
 {% endif %}
-
+</div>
 {% endblock bottom_right %}
